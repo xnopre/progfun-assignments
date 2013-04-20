@@ -161,13 +161,14 @@ pip-log.txt
 
 # Mac crap
 .DS_Store
-/example/target
-/example/project/target/
-/example/lib_managed/
+/*/target
 /example/project
+/*/lib_managed
+/funsets/target/
 /funsets/project
 /funsets/lib_managed/
-/funsets/target/
-/recfun/lib_managed/
-/recfun/project
 /recfun/target/
+/recfun/project
+/recfun/lib_managed/
+/objsets/project
+/downloads/
