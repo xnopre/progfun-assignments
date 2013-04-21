@@ -79,8 +79,6 @@ abstract class TweetSet {
    * and be implemented in the subclasses?
    */
   def descendingByRetweet: TweetList = {
-    //descendingByRetweetAcc(Nil)
-
     if (isEmpty) Nil
     else {
       val tw = mostRetweeted
@@ -88,14 +86,6 @@ abstract class TweetSet {
     }
 
   }
-
-  /*def descendingByRetweetAcc(acc: TweetList): TweetList = {
-    if (isEmpty) acc
-    else {
-      val tw = mostRetweeted
-      new Cons(tw, remove(tw).descendingByRetweetAcc(acc))
-    }
-  }*/
 
   /**
    * The following methods are already implemented
@@ -177,6 +167,7 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
     //that.union(right.union(left)).incl(elem)//0,220
     //right.union(that.union(left)).incl(elem)//1,4
     right.union(left.union(that)).incl(elem) //0,021
+    //left.union(that).union(right).incl(elem) // 174" !!!
     //left.union(right.union(that)).incl(elem) //0,021
     //left.union(that.union(right)).incl(elem)//1,770
 

@@ -44,14 +44,14 @@ class TweetSetSuite extends FunSuite {
     }
   }
 
-//  test("filter: XN more big data") {
-//    var set: TweetSet = new Empty
-//    for (i <- 1 to 200000) {
-//      set = set.incl(new Tweet("" + i, "a" + i, i))
-//      set = set.incl(new Tweet("" + i, "b" + i, i))
-//    }
-//    assert(size(set.filter(tw => true)) === 400000)
-//  }
+  test("filter: XN more big data") {
+    var set: TweetSet = new Empty
+    for (i <- 1 to 200000) {
+      set = set.incl(new Tweet("" + i, "a" + i, i))
+      set = set.incl(new Tweet("" + i, "b" + i, i))
+    }
+    assert(size(set.filter(tw => true)) === 400000)
+  }
 
   test("union: XN Empty union Empty") {
     new TestSets {
@@ -96,7 +96,7 @@ class TweetSetSuite extends FunSuite {
       val x = 1000 * i
       set3 = set3.incl(new Tweet("" + x, "" + x, x))
     }
-    assert(size(set1.union(set2).union(set3)) === 3 * count+8)
+    assert(size(set1.union(set2).union(set3)) === 3 * count)
   }
 
   test("descending: set5") {
