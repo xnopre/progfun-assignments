@@ -102,7 +102,71 @@ class HuffmanSuite extends FunSuite {
 
   test("XN : combine of some leaf list : + preserve weigth order") {
     val leaflist = List(Leaf('e', 7), Leaf('t', 8), Leaf('x', 9))
-    assert(combine(leaflist) === List(Leaf('x', 9),Fork(Leaf('e', 7), Leaf('t', 8), List('e', 't'), 15)))
+    assert(combine(leaflist) === List(Leaf('x', 9), Fork(Leaf('e', 7), Leaf('t', 8), List('e', 't'), 15)))
+  }
+
+  test("XN : until") {
+    val trees = List(Leaf('e', 7), Leaf('t', 8), Leaf('x', 9))
+    val tree = until(singleton, combine)(trees);
+    val expected = Fork(Leaf('x', 9), Fork(Leaf('e', 7), Leaf('t', 8), List('e', 't'), 15), List('x', 'e', 't'), 24);
+    assert(tree === expected)
+  }
+
+  test("XN : createCodeTree") {
+    val tree = createCodeTree(List('a', 'b', 'a', 'c', 'b', 'a'))
+    val expected = Fork(Fork(Leaf('c', 1), Leaf('b', 2), List('c', 'b'), 3), Leaf('a', 3), List('c', 'b', 'a'), 6);
+    assert(tree === expected)
+  }
+
+  test("XN : decode #1") {
+    val code = Fork(Leaf('e', 1), Leaf('f', 1), List('e', 'f'), 2)
+    assert(decode(code, List(0)) === List('e'))
+  }
+
+  test("XN : decode #2") {
+    val code = Fork(Leaf('e', 1), Leaf('f', 1), List('e', 'f'), 2)
+    val secret: List[Bit] = List(0, 1, 0)
+    val result: List[Char] = decode(code, secret)
+    val expected: List[Char] = List('e', 'f', 'e')
+    assert(result === expected)
+  }
+
+  test("XN : decode #3") {
+    val code = Fork(Fork(Leaf('e', 1), Leaf('f', 1), List('e', 'f'), 2), Fork(Leaf('g', 1), Leaf('h', 1), List('g', 'h'), 2), List('e', 'f', 'g', 'h'), 4)
+    val secret: List[Bit] = List(0, 1, 1, 0, 0, 1, 0, 0, 1, 1)
+    val result: List[Char] = decode(code, secret)
+    val expected: List[Char] = List('f', 'g', 'f', 'e', 'h')
+    assert(result === expected)
+  }
+
+  test("XN : decode") {
+    val result: List[Char] = decode(frenchCode, secret)
+    val expected: List[Char] = List('h', 'u', 'f', 'f', 'm', 'a', 'n', 'e', 's', 't', 'c', 'o', 'o', 'l')
+    assert(result === expected)
+  }
+
+  test("XN : encode #1") {
+    val code = Fork(Leaf('e', 1), Leaf('f', 1), List('e', 'f'), 2)
+    val text: List[Char] = List('e')
+    val result: List[Bit] = encode(code)(text)
+    val expected: List[Bit] = List(0)
+    assert(result === expected)
+  }
+
+  test("XN : encode #2") {
+    val code = Fork(Fork(Leaf('e', 1), Leaf('f', 1), List('e', 'f'), 2), Fork(Leaf('g', 1), Leaf('h', 1), List('g', 'h'), 2), List('e', 'f', 'g', 'h'), 4)
+    val text: List[Char] = List('e')
+    val result: List[Bit] = encode(code)(text)
+    val expected: List[Bit] = List(0, 0)
+    assert(result === expected)
+  }
+
+  test("XN : encode #3") {
+    val code = Fork(Fork(Leaf('e', 1), Leaf('f', 1), List('e', 'f'), 2), Fork(Leaf('g', 1), Leaf('h', 1), List('g', 'h'), 2), List('e', 'f', 'g', 'h'), 4)
+    val text: List[Char] = List('g')
+    val result: List[Bit] = encode(code)(text)
+    val expected: List[Bit] = List(1, 0)
+    assert(result === expected)
   }
 
   test("decode and encode a very short text should be identity") {
