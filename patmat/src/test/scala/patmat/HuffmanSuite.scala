@@ -100,6 +100,11 @@ class HuffmanSuite extends FunSuite {
     assert(combine(leaflist) === List(Fork(Leaf('e', 1), Leaf('t', 2), List('e', 't'), 3), Leaf('x', 4)))
   }
 
+  test("XN : combine of some leaf list more than length=3 : + preserve weigth order") {
+    val leaflist = List(Leaf('e', 7), Leaf('t', 8), Leaf('x', 9), Leaf('z', 10))
+    assert(combine(leaflist) === List(Leaf('x', 9), Leaf('z', 10), Fork(Leaf('e', 7), Leaf('t', 8), List('e', 't'), 15)))
+  }
+
   test("XN : combine of some leaf list : + preserve weigth order") {
     val leaflist = List(Leaf('e', 7), Leaf('t', 8), Leaf('x', 9))
     assert(combine(leaflist) === List(Leaf('x', 9), Fork(Leaf('e', 7), Leaf('t', 8), List('e', 't'), 15)))
@@ -174,26 +179,26 @@ class HuffmanSuite extends FunSuite {
       assert(decode(t1, encode(t1)("ab".toList)) === "ab".toList)
     }
   }
-  
+
   test("XN : codeBits") {
-    val table: CodeTable = List(('a', List(0,0)), ('b', List(1,0)), ('c', List(0,1)))
+    val table: CodeTable = List(('a', List(0, 0)), ('b', List(1, 0)), ('c', List(0, 1)))
     val result: List[Bit] = codeBits(table)('b')
-    assert(codeBits(table)('a') === List(0,0))
-    assert(codeBits(table)('b') === List(1,0))
-    assert(codeBits(table)('c') === List(0,1))
+    assert(codeBits(table)('a') === List(0, 0))
+    assert(codeBits(table)('b') === List(1, 0))
+    assert(codeBits(table)('c') === List(0, 1))
   }
-  
+
   test("XN : convert") {
     val tree = Fork(Fork(Leaf('e', 1), Leaf('f', 1), List('e', 'f'), 2), Fork(Leaf('g', 1), Leaf('h', 1), List('g', 'h'), 2), List('e', 'f', 'g', 'h'), 4)
     val result: CodeTable = convert(tree)
-    val expected: CodeTable = List(('e', List(0,0)), ('f', List(0,1)), ('g', List(1,0)), ('h', List(1,1)))
+    val expected: CodeTable = List(('e', List(0, 0)), ('f', List(0, 1)), ('g', List(1, 0)), ('h', List(1, 1)))
     assert(result === expected)
   }
-  
+
   test("XN : quickEncode") {
-	  new TestTrees {
-		  assert(decode(frenchCode, quickEncode(frenchCode)("huffmanestcool".toList)) === "huffmanestcool".toList)
-	  }
+    new TestTrees {
+      assert(decode(frenchCode, quickEncode(frenchCode)("huffmanestcool".toList)) === "huffmanestcool".toList)
+    }
   }
 }
 
